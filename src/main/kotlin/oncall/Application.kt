@@ -1,5 +1,16 @@
 package oncall
 
 fun main() {
-    TODO("프로그램 구현")
+    val inputHandler = InputHandler()
+
+    val date = inputHandler.readDate()
+    val members = inputHandler.readMembers()
+
+    generateCalender(date)
+    display(date,members)
+
+
+
+
+
 }

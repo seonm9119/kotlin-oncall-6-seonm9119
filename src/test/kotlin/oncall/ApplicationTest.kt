@@ -6,6 +6,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class ApplicationTest : NsTest() {
+
+
     @Test
     fun `예외 테스트`() {
         assertSimpleTest {
@@ -27,6 +29,11 @@ class ApplicationTest : NsTest() {
             )
         }
     }
+
+
+
+
+
 
     @Test
     fun `기능 테스트`() {
@@ -71,7 +78,15 @@ class ApplicationTest : NsTest() {
                 """.trimIndent()
             )
         }
+
+
     }
+
+
+
+
+
+
 
     public override fun runMain() {
         main()
