@@ -3,11 +3,11 @@ package oncall
 fun main() {
     val inputHandler = InputHandler()
 
-    val date = inputHandler.readDate()
-    val members = inputHandler.readMembers()
+    val (month, day) = inputHandler.readDate()
+    val (weekMembers, holidayMembers) = inputHandler.readMembers()
 
-    generateCalender(date)
-    display(date,members)
+    val oncallProgram = OnCall(month, day, weekMembers, holidayMembers)
+    oncallProgram.run()
 
 
 

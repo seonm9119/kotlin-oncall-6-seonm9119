@@ -30,11 +30,6 @@ class ApplicationTest : NsTest() {
         }
     }
 
-
-
-
-
-
     @Test
     fun `기능 테스트`() {
         assertSimpleTest {
