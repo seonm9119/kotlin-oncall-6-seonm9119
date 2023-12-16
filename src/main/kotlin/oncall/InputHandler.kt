@@ -15,17 +15,14 @@ class InputHandler {
         return Pair(month, day)
     }
 
-    private fun checkMembers(): Pair<List<String>,List<String>>  {
+    private fun checkMembers(members: List<String>) {
 
-        print("\n평일 비상 근무 순번대로 사원 닉네임을 입력하세요> ")
-        val weekMembers = readLine().split(',')
 
-        print("\n휴일 비상 근무 순번대로 사원 닉네임을 입력하세요> ")
-        val holidayMembers = readLine().split(',')
-        require(weekMembers.size == weekMembers.distinct().size){"\n[ERROR] 유효하지 않은 입력 값입니다. 다시 입력해 주세요."}
-        require(holidayMembers.size == holidayMembers.distinct().size){"\n[ERROR] 유효하지 않은 입력 값입니다. 다시 입력해 주세요."}
+        require(members.size == members.distinct().size){"\n[ERROR] 유효하지 않은 입력 값입니다. 다시 입력해 주세요."}
+        require(members.all { it.length < 6 }){"\n[ERROR] 5자 이상의 닉네임을 가진 근무자가 있습니다. 다시 입력해 주세요."}
+        require(members.size > 5){"\n[ERROR] 최소 근무자가 5명 이상이도록 하십시오. 다시 입력해 주세요."}
+        require(members.size < 36){"\n[ERROR] 근무자수가 35명을 넘지 않도록 하시오. 다시 입력해 주세요."}
 
-        return Pair(weekMembers, holidayMembers)
     }
 
 
@@ -47,7 +44,16 @@ class InputHandler {
 
         while (true){
             try {
-                return checkMembers()
+
+                print("\n평일 비상 근무 순번대로 사원 닉네임을 입력하세요> ")
+                val weekMembers = readLine().split(',')
+
+                print("\n휴일 비상 근무 순번대로 사원 닉네임을 입력하세요> ")
+                val holidayMembers = readLine().split(',')
+
+                checkMembers(weekMembers)
+                checkMembers(holidayMembers)
+                return Pair(weekMembers, holidayMembers)
             } catch (e: IllegalArgumentException) {
                 print(e.message)
             }

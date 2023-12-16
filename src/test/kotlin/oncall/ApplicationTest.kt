@@ -7,6 +7,28 @@ import org.junit.jupiter.api.Test
 
 class ApplicationTest : NsTest() {
 
+    @Test
+    fun `연달아 근무하는 경우`() {
+        assertSimpleTest {
+            run(
+                "4,월",
+                "허브,쥬니,말랑,라온,헤나,우코",
+                "헤나,로이스,애쉬,푸만능,우가,아이크"
+            )
+            assertThat(output()).contains(
+                """
+                4월 1일 월 허브
+                4월 2일 화 쥬니
+                4월 3일 수 말랑
+                4월 4일 목 라온
+                4월 5일 금 헤나
+                4월 6일 토 로이스
+                4월 7일 일 헤나
+                """.trimIndent()
+            )
+        }
+    }
+
 
     @Test
     fun `예외 테스트`() {
@@ -76,11 +98,6 @@ class ApplicationTest : NsTest() {
 
 
     }
-
-
-
-
-
 
 
     public override fun runMain() {

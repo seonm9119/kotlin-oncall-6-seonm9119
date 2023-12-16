@@ -11,22 +11,36 @@ class OnCall(private val month: Int,
 
     private fun assignMembers(){
 
-        val copyWeekMembers = weekMembers.toMutableList()
-        val copyHolidayMembers = holidayMembers.toMutableList()
+        val repeatedWeekMembers = List(monthDaysOfWeek.size) { weekMembers }.flatten().toMutableList()
+        val repeatedHolidayMembers = List(monthDaysOfWeek.size) { holidayMembers }.flatten().toMutableList()
+
 
         for (i in 0 until monthDaysOfWeek.size){
 
             when{
-                monthDaysOfWeek[i].contains("(휴일)")->
-                    assignedMembers.add(copyHolidayMembers.removeFirst())
-                monthDaysOfWeek[i] in Days.weekDay ->
-                    assignedMembers.add(copyWeekMembers.removeFirst())
-                else -> assignedMembers.add(copyHolidayMembers.removeFirst())
+                monthDaysOfWeek[i].contains("(휴일)")->{
+                    if (repeatedWeekMembers.size > 2 && repeatedWeekMembers[0] == repeatedWeekMembers[1])
+                        switchMember(repeatedWeekMembers, 1,2)
+                    assignedMembers.add(repeatedWeekMembers.removeFirst())
+                }
+
+                monthDaysOfWeek[i] in Days.weekDay ->{
+                    if (repeatedHolidayMembers.first() == repeatedWeekMembers.first())
+                        switchMember(repeatedHolidayMembers, 0,1)
+                    if (repeatedWeekMembers.size > 2 && repeatedWeekMembers[0] == repeatedWeekMembers[1])
+                        switchMember(repeatedWeekMembers, 1,2)
+                    assignedMembers.add(repeatedWeekMembers.removeFirst())
+                }
+
+                else -> {
+                    if (repeatedHolidayMembers.first() == repeatedWeekMembers.first())
+                        switchMember(repeatedWeekMembers, 0,1)
+                    assignedMembers.add(repeatedHolidayMembers.removeFirst())
+
+                }
             }
 
         }
-
-
 
     }
 
