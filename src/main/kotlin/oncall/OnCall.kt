@@ -9,6 +9,15 @@ class OnCall(private val month: Int,
     private val monthDaysOfWeek = mutableListOf<String>()
     private val assignedMembers = mutableListOf<String>()
 
+    private fun checkHolidaySwitch(listWeek: MutableList<String>, listHoli: MutableList<String>){
+        if (listHoli.first() == listWeek.first())
+            switchMember(listHoli, 0,1)
+    }
+
+    private fun checkWeekDaySwitch(listWeek: MutableList<String>){
+        if (listWeek.size > 2 && listWeek[0] == listWeek[1])
+            switchMember(listWeek, 1,2)
+    }
     private fun assignMembers(){
 
         val repeatedWeekMembers = List(monthDaysOfWeek.size) { weekMembers }.flatten().toMutableList()
@@ -19,24 +28,19 @@ class OnCall(private val month: Int,
 
             when{
                 monthDaysOfWeek[i].contains("(휴일)")->{
-                    if (repeatedWeekMembers.size > 2 && repeatedWeekMembers[0] == repeatedWeekMembers[1])
-                        switchMember(repeatedWeekMembers, 1,2)
+                    checkWeekDaySwitch(repeatedWeekMembers)
                     assignedMembers.add(repeatedWeekMembers.removeFirst())
                 }
 
                 monthDaysOfWeek[i] in Days.weekDay ->{
-                    if (repeatedHolidayMembers.first() == repeatedWeekMembers.first())
-                        switchMember(repeatedHolidayMembers, 0,1)
-                    if (repeatedWeekMembers.size > 2 && repeatedWeekMembers[0] == repeatedWeekMembers[1])
-                        switchMember(repeatedWeekMembers, 1,2)
+                    checkHolidaySwitch(repeatedWeekMembers, repeatedHolidayMembers)
+                    checkWeekDaySwitch(repeatedWeekMembers)
                     assignedMembers.add(repeatedWeekMembers.removeFirst())
                 }
 
                 else -> {
-                    if (repeatedHolidayMembers.first() == repeatedWeekMembers.first())
-                        switchMember(repeatedWeekMembers, 0,1)
+                    checkHolidaySwitch(repeatedWeekMembers, repeatedHolidayMembers)
                     assignedMembers.add(repeatedHolidayMembers.removeFirst())
-
                 }
             }
 
